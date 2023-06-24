@@ -1,17 +1,25 @@
-// Import required modules
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+// app.js
+
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const http = require('http');
 
 // Import route modules
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var lobbyRouter = require('./routes/lobby');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const lobbyRouter = require('./routes/lobby');
 
 // Create an Express application instance
-var app = module.exports = express();
+const app = module.exports = express();
+
+// Create an HTTP server by ourselves
+const server = http.createServer(app);
+
+// Set up web socket server
+const socket = require('./socket')(server);
 
 // Set up view engine for rendering templates
 app.set('views', path.join(__dirname, 'views'));
@@ -30,6 +38,7 @@ app.use('/users', usersRouter); // Use the 'usersRouter' for requests to '/users
 app.use('/lobby', lobbyRouter); // Use the 'lobbyRouter' for requests to '/lobby' URL
 
 
+
 // Catch 404 errors and forward to the error handler
 app.use(function(req, res, next) {
   next(createError(404));
@@ -46,3 +55,8 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+// Start the server
+const port = process.env.PORT || 3000;
+server.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
