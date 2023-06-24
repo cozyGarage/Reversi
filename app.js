@@ -11,15 +11,13 @@ const http = require('http');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const lobbyRouter = require('./routes/lobby');
+const initializeSocket = require('./socket');
 
 // Create an Express application instance
-const app = module.exports = express();
+const app = express();
 
 // Create an HTTP server by ourselves
 const server = http.createServer(app);
-
-// Set up web socket server
-const socket = require('./socket')(server);
 
 // Set up view engine for rendering templates
 app.set('views', path.join(__dirname, 'views'));
@@ -36,8 +34,6 @@ app.use(express.static(path.join(__dirname, 'public'))); // Serve static files f
 app.use('/', indexRouter); // Use the 'indexRouter' for requests to the root URL ('/')
 app.use('/users', usersRouter); // Use the 'usersRouter' for requests to '/users' URL
 app.use('/lobby', lobbyRouter); // Use the 'lobbyRouter' for requests to '/lobby' URL
-
-
 
 // Catch 404 errors and forward to the error handler
 app.use(function(req, res, next) {
@@ -60,3 +56,5 @@ const port = process.env.PORT || 3000;
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+module.exports ={app, server};
