@@ -8,6 +8,7 @@ var logger = require('morgan');
 // Import route modules
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var lobbyRouter = require('./routes/lobby');
 
 // Create an Express application instance
 var app = module.exports = express();
@@ -26,7 +27,7 @@ app.use(express.static(path.join(__dirname, 'public'))); // Serve static files f
 // Define routes
 app.use('/', indexRouter); // Use the 'indexRouter' for requests to the root URL ('/')
 app.use('/users', usersRouter); // Use the 'usersRouter' for requests to '/users' URL
-app.use('/lobby', require('./routes/lobby'));
+app.use('/lobby', lobbyRouter); // Use the 'lobbyRouter' for requests to '/lobby' URL
 
 
 // Catch 404 errors and forward to the error handler
