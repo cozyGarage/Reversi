@@ -25,7 +25,7 @@ $(document).ready(function() {
     if (typeof username === 'undefined' || username === null) {
       username = 'Anonymous' + Math.floor(Math.random() * 1000);
     }
-    $('#message').prepend($('<li>').text(username + ' has joined the lobby'));
+    socketClient.emit('userJoined', username); // Emit userJoined event
   }
 
   function announceLeave() {
@@ -33,13 +33,11 @@ $(document).ready(function() {
     if (typeof username === 'undefined' || username === null) {
       username = 'Anonymous' + Math.floor(Math.random() * 1000);
     }
-    $('#message').prepend($('<li>').text(username + ' has left the lobby'));
+    socketClient.emit('userLeft', username); // Emit userLeft event
   }
 
   announceJoin();
 
   let socketClient = io();
-  socketClient.on('log', function(array) {
-    console.log.apply(console, array);
-  });
 });
+
