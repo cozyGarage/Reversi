@@ -1,23 +1,16 @@
-// app.js
-
+// Import required modules
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const http = require('http');
 
 // Import route modules
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-const lobbyRouter = require('./routes/lobby');
-const initializeSocket = require('./socket');
 
 // Create an Express application instance
 const app = express();
-
-// Create an HTTP server by ourselves
-const server = http.createServer(app);
 
 // Set up view engine for rendering templates
 app.set('views', path.join(__dirname, 'views'));
@@ -33,7 +26,6 @@ app.use(express.static(path.join(__dirname, 'public'))); // Serve static files f
 // Define routes
 app.use('/', indexRouter); // Use the 'indexRouter' for requests to the root URL ('/')
 app.use('/users', usersRouter); // Use the 'usersRouter' for requests to '/users' URL
-app.use('/lobby', lobbyRouter); // Use the 'lobbyRouter' for requests to '/lobby' URL
 
 // Catch 404 errors and forward to the error handler
 app.use(function(req, res, next) {
@@ -51,10 +43,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-// Start the server
-const port = process.env.PORT || 3000;
-server.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
-
-module.exports ={app, server};
+module.exports = app;

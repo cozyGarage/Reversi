@@ -38,8 +38,8 @@ $(document).ready(function() {
 
   announceJoin();
 
-  let socket = io();
-  socket.on('log', function(array) {
+  let socketClient = io();
+  socketClient.on('log', function(array) {
     console.log.apply(console, array);
   });
 });
