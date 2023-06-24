@@ -7,3 +7,11 @@ body {
 a {
   color: #00B7FF;
 }
+
+
+.hearderrow {
+  background-color: #00B7FF;
+  color: white;
+  padding: 10px;
+  text-align: center;
+}
