@@ -26,6 +26,8 @@ app.use(express.static(path.join(__dirname, 'public'))); // Serve static files f
 // Define routes
 app.use('/', indexRouter); // Use the 'indexRouter' for requests to the root URL ('/')
 app.use('/users', usersRouter); // Use the 'usersRouter' for requests to '/users' URL
+app.use('/lobby', require('./routes/lobby'));
+
 
 // Catch 404 errors and forward to the error handler
 app.use(function(req, res, next) {
