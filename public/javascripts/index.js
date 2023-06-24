@@ -36,8 +36,17 @@ $(document).ready(function() {
     socketClient.emit('userLeft', username); // Emit userLeft event
   }
 
-  announceJoin();
-
   let socketClient = io();
+
+  // Handle client connection
+  socketClient.on('connect', function() {
+    announceJoin(); // Call announceJoin() when the client connects
+  });
+
+  // Handle client disconnection
+  socketClient.on('disconnect', function() {
+    announceLeave(); // Call announceLeave() when the client disconnects
+  });
 });
+
 
