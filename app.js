@@ -10,7 +10,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 // Create an Express application instance
-var app = express();
+var app = module.exports = express();
 
 // Set up view engine for rendering templates
 app.set('views', path.join(__dirname, 'views'));
@@ -43,4 +43,3 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
