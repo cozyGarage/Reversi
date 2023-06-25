@@ -40,7 +40,6 @@ socketClient.on('disconnect', function () {
 
 // Request to join the chat room
 $(() => {
-  console.log('Requesting to join chat room');
   const request = { username: username, room: chatRoom };
   socketClient.emit('join_room', request);
 });
