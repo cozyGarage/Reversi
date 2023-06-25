@@ -23,7 +23,7 @@ function announceJoinOrLeave(joinOrLeave) {
 
   // Display a message
   const listItem = $('<p>').text(username + ' ' + message);
-  $('#messages').append(listItem);
+  $('#messages').prepend(listItem);
 }
 
 // Handle client connection
