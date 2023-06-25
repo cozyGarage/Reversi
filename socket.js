@@ -1,6 +1,5 @@
 const socketio = require('socket.io');
 
-
 module.exports = function initializeSocket(server) {
   const io = socketio(server);
 
@@ -8,20 +7,20 @@ module.exports = function initializeSocket(server) {
     // User joined
     socket.on('userJoined', (username) => {
       const decodedUsername = decodeURIComponent(username);
-      io.emit('userJoined', decodedUsername);
+      socket.broadcast.emit('userJoined', decodedUsername); // Broadcast the event to all other clients
       serverLog(decodedUsername + ' has joined the lobby');
     });
 
     // User left
     socket.on('userLeft', (username) => {
-      io.emit('userLeft', username);
+      socket.broadcast.emit('userLeft', username); // Broadcast the event to all other clients
       serverLog(username + ' has left the lobby');
     });
 
     // User disconnected
     socket.on('disconnect', () => {
       const socketId = socket.id;
-      io.emit('userDisconnected', { socketId });
+      socket.broadcast.emit('userDisconnected', { socketId }); // Broadcast the event to all other clients
       serverLog('User with socket ID ' + socketId + ' has disconnected');
     });
 
@@ -65,7 +64,7 @@ module.exports = function initializeSocket(server) {
 
       io.in(room).fetchSockets().then((sockets) => {
         serverLog('Room ' + room + ' now has ' + sockets.length + ' client(s)');
-        
+
         // If socket didn't join the room
         if (typeof sockets === 'undefined' || sockets === null || !sockets.includes(socket)) {
           response = {
@@ -82,9 +81,9 @@ module.exports = function initializeSocket(server) {
             count: sockets.length,
             message: 'joined room ' + room
           };
-          
+
           // Tell everyone in the room that someone joined
-          io.of('/').to(room).emit('join_room_response', response);
+          socket.broadcast.to(room).emit('join_room_response', response); // Broadcast the event to all other clients in the room
           serverLog('join_room command succeeded: ' + JSON.stringify(response));
         }
       });
