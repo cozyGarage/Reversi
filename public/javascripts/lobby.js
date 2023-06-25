@@ -37,9 +37,9 @@ socketClient.on('disconnect', function () {
 
 //request to join the chat room
 $(( ) => {
-    const request = { 'username': username, 'room': chatRoom };
+    const request = { username: username, room: chatRoom };
     request.room = chatRoom;
     request.username = username;
     console.log(' **** request to join \'join_room\' command: '+JSON.stringify(request));
-    socketClient.emit('join_room', payload);
+    socketClient.emit('join_room', request);
 });
