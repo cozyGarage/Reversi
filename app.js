@@ -1,16 +1,16 @@
 // Import required modules
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 
 // Import route modules
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
 
 // Create an Express application instance
-var app = module.exports = express();
+const app = express();
 
 // Set up view engine for rendering templates
 app.set('views', path.join(__dirname, 'views'));
@@ -26,8 +26,6 @@ app.use(express.static(path.join(__dirname, 'public'))); // Serve static files f
 // Define routes
 app.use('/', indexRouter); // Use the 'indexRouter' for requests to the root URL ('/')
 app.use('/users', usersRouter); // Use the 'usersRouter' for requests to '/users' URL
-app.use('/lobby', require('./routes/lobby'));
-
 
 // Catch 404 errors and forward to the error handler
 app.use(function(req, res, next) {
@@ -45,3 +43,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+module.exports = app;
