@@ -1,14 +1,21 @@
 // Import the Express module
-var express = require('express');
-
+const express = require('express');
 // Create a new instance of an Express Router
-var router = module.exports =  express.Router();
+const router = express.Router();
 
-/* GET home page. */
-// Define a route handler for the GET request method on the root path ("/")
-router.get('/', function(req, res, next) {
-  // Render the "index" view template and pass in an object with a title property set to "Express"
-  res.render('index', { title: 'Express' });
+// GET route for the homepage
+router.get('/', (req, res) => {
+  res.render('index', { title: 'Reversi' });
 });
+
+// POST route for handling the login form submission
+router.post('/lobby', (req, res) => {
+  const username = req.body.username;
+  // Redirect the user back to the homepage after successful login
+  res.redirect('/');
+});
+
+// Export the router
+module.exports = router;
 
 
