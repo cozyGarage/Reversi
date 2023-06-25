@@ -27,8 +27,8 @@ module.exports = function initializeSocket(server) {
     // Join room
     socket.on('join_room', (request) => {
       io.emit('join_room', request);
-      serverLog('Server received request to','\'join room\''+JSON.stringify(request));
-      if((typeof request === 'undefined') && (request === null)){
+      serverLog('Server received request to', '\'join room\'' + JSON.stringify(request));
+      if ((typeof request === 'undefined') && (typeof request === null)) {
         response = {};
         response.result = 'error';
         response.message = 'client request is undefined or null';
@@ -38,7 +38,7 @@ module.exports = function initializeSocket(server) {
       }
       let room = request.room;
       let username = request.username;
-      if((typeof room === 'undefined') || (typeof room === null)){
+      if ((typeof room === 'undefined') || (typeof room === null)) {
         response = {};
         response.result = 'error';
         response.message = 'request.room is undefined or null';
@@ -46,7 +46,7 @@ module.exports = function initializeSocket(server) {
         serverLog('join_room command failed', JSON.stringify(response));
         return;
       }
-      if((typeof username === 'undefined') || (typeof username === null)){
+      if ((typeof username === 'undefined') || (typeof username === null)) {
         response = {};
         response.result = 'error';
         response.message = 'request.username is undefined or null';
@@ -57,35 +57,36 @@ module.exports = function initializeSocket(server) {
     });
     // Handle client resquest to join
     socket.join(room);
-    
+
     io.in(room).fetchSockets().then((sockets) => {
       serverLog('Room ' + room + ' now has ' + sockets.length + ' client(s)');
       //IF socket didn't join the room
-       if ((typeof sockets === 'undefined') || (sockets === null) || !(sockets.includes(socket))) {
-            response = {};
-            response.result = 'error';
-            response.message = 'server internal in' + room;
-            socket.emit('join_room_response', response);
-            serverLog('join_room command failed', JSON.stringify(response));
-       } else {
-            response = {};
-            response.result = 'success';
-            response.room = room;
-            response.username = username;
-            response.count = sockets.length;
-            response.message = 'joined room ' + room;
-            //Tell everyone in the room that someone joined
-            io.of('/').to(room).emit('join_room_response', response);
-            
-            socket.emit('join_room_response', response);
-            serverLog('join_room command succeeded', JSON.stringify(response));
-        }
-  });
-    
+      if ((typeof sockets === 'undefined') || (typeof sockets === null) || !(sockets.includes(socket))) {
+        response = {};
+        response.result = 'error';
+        response.message = 'server internal in' + room;
+        socket.emit('join_room_response', response);
+        serverLog('join_room command failed', JSON.stringify(response));
+      } else {
+        response = {};
+        response.result = 'success';
+        response.room = room;
+        response.username = username;
+        response.count = sockets.length;
+        response.message = 'joined room ' + room;
+        //Tell everyone in the room that someone joined
+        io.of('/').to(room).emit('join_room_response', response);
 
-
-  function serverLog(message) {
-    console.log(message);
-  }
+        serverLog('join_room command succeeded', JSON.stringify(response));
+      }
+      function serverLog(message) {
+        console.log(message);
+      }
+    });
+  })
 };
+
+
+
+
 
