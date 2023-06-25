@@ -12,33 +12,34 @@ function getIRIParametersValue(requestedKey) {
     }
   }
 }
-function announceJoin() {
+
+function announceJoinOrLeave(joinOrLeave) {
   if (typeof username === 'undefined' || username === null) {
     username = 'Anonymous' + Math.floor(Math.random() * 1000);
   }
-  socketClient.emit('userJoined', username); // Emit userJoined event
+  const event = joinOrLeave ? 'userJoined' : 'userLeft';
+  const message = joinOrLeave ? 'has joined the lobby' : 'has left the lobby';
+  socketClient.emit(event, username); // Emit userJoined or userLeft event
+
+  // Display a message
+  const listItem = $('<p>').text(username + ' ' + message);
+  $('#messages').prepend(listItem);
 }
 
-function announceLeave() {
-  if (typeof username === 'undefined' || username === null) {
-    username = 'Anonymous' + Math.floor(Math.random() * 1000);
-  }
-  socketClient.emit('userLeft', username); // Emit userLeft event
-}
 // Handle client connection
 socketClient.on('connect', function () {
-  announceJoin(); // Call announceJoin() when the client connects
+  console.log('Client connected');
+  announceJoinOrLeave(true); // Call announceJoinOrLeave with true when the client connects
 });
 
 // Handle client disconnection
 socketClient.on('disconnect', function () {
-  announceLeave(); // Call announceLeave() when the client disconnects
+  console.log('Client disconnected');
+  announceJoinOrLeave(false); // Call announceJoinOrLeave with false when the client disconnects
 });
 
-//request to join the chat room
-$(( ) => {
-    const request = { username: username, room: chatRoom };
-    request.room = chatRoom;
-    request.username = username;
-    socketClient.emit('join_room', request);
+// Request to join the chat room
+$(() => {
+  const request = { username: username, room: chatRoom };
+  socketClient.emit('join_room', request);
 });
