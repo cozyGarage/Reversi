@@ -1,5 +1,5 @@
 const socketio = require('socket.io');
-const { response } = require('./app');
+
 
 module.exports = function initializeSocket(server) {
   const io = socketio(server);
