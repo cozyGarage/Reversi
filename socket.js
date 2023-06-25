@@ -6,20 +6,27 @@ module.exports = function initializeSocket(server) {
   io.on('connection', (socket) => {
     // User joined
     socket.on('userJoined', (username) => {
-      io.emit('userJoined', username);
-      console.log(username + ' has joined the lobby');
+      const decodedUsername = decodeURIComponent(username);
+      io.emit('userJoined', decodedUsername);
+      serverLog(decodedUsername + ' has joined the lobby');
     });
 
     // User left
     socket.on('userLeft', (username) => {
       io.emit('userLeft', username);
-      console.log(username + ' has left the lobby');
+      serverLog(username + ' has left the lobby');
     });
 
     // User disconnected
     socket.on('disconnect', () => {
-      io.emit('userDisconnected', { socketId: socket.id });
-      console.log('User with socket ID ' + socket.id + ' has disconnected');
+      const socketId = socket.id;
+      io.emit('userDisconnected', { socketId });
+      serverLog('User with socket ID ' + socketId + ' has disconnected');
     });
   });
+
+  function serverLog(message) {
+    console.log(message);
+  }
 };
+
