@@ -24,6 +24,14 @@ module.exports = function initializeSocket(server) {
       serverLog('User with socket ID ' + socketId + ' has disconnected');
     });
   });
+    // Join room
+    socket.on('join_room', (payload) => {
+      io.emit('join_room', payload);
+      serverLog(payload.username + ' has joined the room ' + payload.room); 
+    });
+
+
+
 
   function serverLog(message) {
     console.log(message);
